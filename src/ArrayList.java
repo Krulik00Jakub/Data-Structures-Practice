@@ -116,6 +116,10 @@ public class ArrayList<T> {
 		a = b;
 	}
 	
+	/**
+	 * Tests the data structure.
+	 * @param args command line arguments
+	 */
 	public static void main(String args[]) {
 		int m = 10;
 		ArrayList<Integer> q = new ArrayList<Integer>();
