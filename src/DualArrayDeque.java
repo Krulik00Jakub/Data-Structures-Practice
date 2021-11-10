@@ -2,7 +2,8 @@
 
 /**
  * Implementation of DualArrayDeque using ArrayStacks to create two backing arrays.
- * It's not working! Why does it return a list full of null values?!
+ *
+ * copyright 2020-2021 Jakub Krulik
  * @author Jakub Krulik 3509416
  *
  * @param <T> Type parameter for the type of object to be stored in the DualArrayDeque.
@@ -53,7 +54,7 @@ public class DualArrayDeque<T> {
 	} // end of set(i, x)
 	
 	/**
-	 * Adds a new data value after index i - 1.
+	 * Adds a new data value after index i.
 	 * @param i the index of the DualArrayDeque
 	 * @param x the data value to be added to the array
 	 */
@@ -85,7 +86,7 @@ public class DualArrayDeque<T> {
 	} // end of remove(i)
 	
 	/**
-	 * Ensures that both sides of the DualArrayDeque are storing plus minus the same amount of data.
+	 * Ensures that both sides of the DualArrayDeque are storing +/- the same amount of data.
 	 */
 	private void balance() {
 		/*
@@ -99,18 +100,6 @@ public class DualArrayDeque<T> {
 		 */
 		if (front.size() + 1 < back.size()) {
 			
-			/*
-			front.add(front.size() + 1, front.get(front.size()));
-			
-			for (int i = front.size(); i > shift; i--) {
-				front.set(i, front.get(i-1));
-			}
-			
-			for (int i = shift - 1; i > 0; i--) {
-				front.set(i, back.remove(1));
-			} // good
-			*/
-			
 			for (int i = shift; i > 0; i--) {
 				front.add(0, back.remove(0));
 			}
@@ -119,17 +108,6 @@ public class DualArrayDeque<T> {
 		 * This part is executed if front is much larger than back.
 		 */	
 		} else if (back.size() + 1 < front.size()) {			
-			/*
-			back.add(back.size() + 1, back.get(back.size()));
-			
-			for (int i = back.size(); i > shift; i--) {
-				back.set(i, back.get(i-1));
-			}
-			
-			for (int i = shift - 1; i > 0; i--) {
-				back.set(i, front.remove(1));
-			}	
-			*/
 			
 			for (int i = shift; i > 0; i--) {
 				back.add(0, front.remove(0));
@@ -139,14 +117,22 @@ public class DualArrayDeque<T> {
 		
 	} // end of balance()
 	
-	
+	/**
+	 * main() method, where the DualArrayDeque is tested for functionality.
+	 */
 	public static void main(String[] args) {
 		DualArrayDeque<Integer> q = new DualArrayDeque<Integer>();
 		
+		/*
+		 * Adds 100 integers to q.
+		 */
 		for (int i = 0; i < 100; i++) {
 			q.add(i, i);
 		}
 		
+		/*
+		 * Prints all data stored in q
+		 */
 		System.out.print("[");
 		for (int i = 0; i < 100; i++) {
 			System.out.print(" " + q.get(i) + ",");
