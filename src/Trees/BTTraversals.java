@@ -10,17 +10,6 @@ public class BTTraversals<T extends Comparable<T>> extends BinaryTree<T> {
 		}
 		
 		if (u.x == x) {
-			/*
-			while (true) {
-				if (u.left != nil) {
-					return u.left.x;
-				} else if (u.right != nil) {
-					return u.right.x;
-				} else {
-					u = u.parent.right; // switches to the next branch of the tree
-				}
-			}*/
-			
 			return u;
 		}
 		
@@ -33,17 +22,6 @@ public class BTTraversals<T extends Comparable<T>> extends BinaryTree<T> {
 	
 	public T preOrderNext(T x) {
 		Node<T> u = getNode(x, r);
-		/*
-		while (u.right != nil) {
-			if (u.left != nil) {
-				u = u.left;
-			} else if (u.right != nil) {
-				return u.right.x;
-			} else {
-				u = u.parent.right; // switches to the next branch of the tree
-			}
-		}*/
-		
 		Node<T> prev = u;
 		
 		if (u.left != nil) {return u.left.x;}
