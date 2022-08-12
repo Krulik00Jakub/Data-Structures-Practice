@@ -1,4 +1,6 @@
 # Contents:
+`ArrayList` - Implementation of a list using an array.
+
 `SLList` - Superclass which other SLLsit subclasses extend  
 
 `SLListPQ` - Implementation of a priority queue using SLList  
