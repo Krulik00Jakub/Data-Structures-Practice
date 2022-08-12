@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Question2a<T> extends SLList<T> {
+public class SLList_Swap<T> extends SLList<T> {
 	
 
 	/** 
