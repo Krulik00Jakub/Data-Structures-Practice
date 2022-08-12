@@ -1,21 +1,21 @@
 
-
 /**
- * Implementation of DualArrayDeque using ArrayStacks to create two backing arrays.
+ * Implementation of DualArrayDeque<T> using ArrayList<T> to create two backing arrays.
+ * copywright 2021-2022 Jakub krulik
+ * @author Jakub
  *
- * copyright 2020-2021 Jakub Krulik
- * @author Jakub Krulik 3509416
- *
- * @param <T> Type parameter for the type of object to be stored in the DualArrayDeque.
+ * @param <T> Generic type parameter.
  */
-public class DualArrayDeque<T> {
+public class DualArrayDeque<T> extends ArrayStack<T> {
 	
 	ArrayStack<T> back; // back of the DualArrayDeque
 	ArrayStack<T> front; // front of the DualArrayDeque
+	int n;
 	
 	public DualArrayDeque() {
 		back = new ArrayStack<T>();
 		front = new ArrayStack<T>();
+		n = 0;
 	}
 	
 	/**
@@ -23,7 +23,7 @@ public class DualArrayDeque<T> {
 	 * @return The size of the DualArrayDeque
 	 */
 	public int size() {
-		return front.size() + back.size();
+		return n;
 	} // end of size()
 	
 	/**
@@ -33,9 +33,9 @@ public class DualArrayDeque<T> {
 	 */
 	public T get(int i) {
 		if (i < front.size()) {
-			return front.get(front.size() - i - 1);
-		} else { // else if (i > front.size())
-			return back.get(i - front.size());
+			return front.get(front.size()-i-1);
+		} else {
+			return back.get(i-front.size());
 		}
 	} // end of get(i) 
 	
@@ -47,28 +47,32 @@ public class DualArrayDeque<T> {
 	 */
 	public T set(int i, T x) {
 		if (i < front.size()) {
-			return front.set(front.size() - i - 1, x);
+			return front.set(front.size()-i-1, x);
 		} else {
 			return back.set(i - front.size(), x);
 		}
 	} // end of set(i, x)
 	
 	/**
-	 * Adds a new data value after index i.
+	 * Adds a new data value after index i - 1.
 	 * @param i the index of the DualArrayDeque
 	 * @param x the data value to be added to the array
 	 */
 	public void add(int i, T x) {
 		if (i <= front.size()) {
-			front.add(front.size() - (i), x);
+			front.add(front.size()-i, x);
 		} else {
-			back.add(i - front.size(), x);
+			back.add(i-front.size(), x);
 		}
-		
-		if (front.size() + 1 < back.size() || back.size() + 1 < front.size()) {
-			balance();
-		}
+		n++;
+		balance();
 	} // end of add(i, x)
+	
+	public void push(T x) {
+		front.add(front.size(), x);
+		n++;
+		balance();
+	}
 	
 	/**
 	 * Removes data value at index i and decrements the list.
@@ -78,72 +82,79 @@ public class DualArrayDeque<T> {
 	public T remove(int i) {
 		T x;
 		if (i < front.size()) {
-			x = front.remove(front.size() - i);
+			x = front.remove(front.size()-i-1);
 		} else {
-			x = back.remove(i - front.size() - 1);
+			x = back.remove(i - front.size());
 		}
+		n--;
 		return x;
 	} // end of remove(i)
 	
+	
 	/**
-	 * Ensures that both sides of the DualArrayDeque are storing +/- the same amount of data.
+	 * Constructor method used by instance methods to create abstract lists.
+	 * @return abstract structure ArrayList<T>
+	 */
+	protected ArrayStack<T> newStack() {
+		return new ArrayStack<T>();
+	} // end of newStack()
+	
+	
+	/**
+	 * Ensures that both sides of the DualArrayDeque<T> are storing +- the same amount of data.
 	 */
 	private void balance() {
-		/*
-		 * The number of elements to be shifted from back to front or
-		 * vice versa.
-		 */
-		int shift = Math.abs(front.size() - back.size()) / 2;
+		int shift = Math.abs(front.size() - back.size()) / 2; // the number of elements to be shifted from back to front or vice versa
 		
-		/*
-		 * This part is executed if back is much larger than front.
-		 */
-		if (front.size() + 1 < back.size()) {
-			
+		if (front.size() > back.size()*3) {
 			for (int i = shift; i > 0; i--) {
-				front.add(0, back.remove(0));
+				back.add(front.remove());
 			}
-			
-		/* 
-		 * This part is executed if front is much larger than back.
-		 */	
-		} else if (back.size() + 1 < front.size()) {			
-			
+
+		} else if (back.size() > front.size()*3) {
 			for (int i = shift; i > 0; i--) {
-				back.add(0, front.remove(0));
+				front.add(back.remove());
 			}
-			
-		} else ;
+		}
 		
 	} // end of balance()
 	
-	/**
-	 * main() method, where the DualArrayDeque is tested for functionality.
-	 */
+	@Override
+	public String print() {
+		StringBuilder print = new StringBuilder();
+		print.append("[");
+		for (int i = 0; i < size(); i++) {
+			print.append(get(i));
+			if (i != size()-1) {
+				print.append(", ");
+			}
+		}
+		print.append("]");
+		
+		return print.toString();
+	} // end of method print()
+	
 	public static void main(String[] args) {
 		DualArrayDeque<Integer> q = new DualArrayDeque<Integer>();
 		
-		/*
-		 * Adds 100 integers to q.
-		 */
 		for (int i = 0; i < 100; i++) {
 			q.add(i, i);
 		}
 		
-		/*
-		 * Prints all data stored in q
-		 */
-		System.out.print("[");
-		for (int i = 0; i < 100; i++) {
-			System.out.print(" " + q.get(i) + ",");
-		}
-		System.out.println("]");
+		System.out.println("front.size: " + q.front.size());
+		System.out.println("back.size: " + q.back.size());
 		
-		DualArrayDeque<Integer> a = new DualArrayDeque<Integer>();
-		a.add(0, 1);
-		a.add(1, 2);
-		System.out.println(a.get(0));
-		System.out.println(a.get(1));
+		System.out.println("Size: " + q.size());
+		
+		System.out.println(q.print());
+		
+		System.out.println();
+		
+		for (int i = 99; i >= 0; i--) {
+			System.out.println(q.remove(i));
+		}
+		
+		
 	} // end of main()
 
 } // end of class DualArrayDeque
