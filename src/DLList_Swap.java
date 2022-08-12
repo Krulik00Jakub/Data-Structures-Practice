@@ -2,7 +2,7 @@
  * Method swap() of class
  */
 
-public class Question2b<T> extends DLList<T> {
+public class DLList_Swap<T> extends DLList<T> {
 
 	/** Swaps element x, and next element in the list */
 	public boolean swap(int x) {
