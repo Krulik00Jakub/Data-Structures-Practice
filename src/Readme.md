@@ -1,4 +1,6 @@
 # Contents:
+`File:Trees` - Contains tree-related data structures.
+
 `ArrayList` - Implementation of a list using an array.
 
 `SLList` - Superclass which other SLLsit subclasses extend  
